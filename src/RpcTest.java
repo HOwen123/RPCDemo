@@ -7,11 +7,11 @@ import server.RpcExporter;
 
 public class RpcTest {
 	public static void main(String[] args) {
-		new Thread(new Runnable() {
-			
+		new Thread(new Runnable() {	
 			@Override
 			public void run() {
 				try {
+					System.out.println("服务端启用");
 					RpcExporter.exporter("localhost", 8088);
 				} catch (Exception e) {
 					e.printStackTrace();

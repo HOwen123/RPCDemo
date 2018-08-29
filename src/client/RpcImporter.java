@@ -11,9 +11,9 @@ import java.net.Socket;
 public class RpcImporter<S> {
 	@SuppressWarnings("unchecked")
 	public S importer(final Class<?> serviceClass,final InetSocketAddress addr) {
+		//创建一个代理类，连接服务端，将对象信息发送给服务端，服务端通过反射创建实例返回给客户端
 		return (S)Proxy.newProxyInstance(serviceClass.getClassLoader(), new Class<?>[] {serviceClass.getInterfaces()[0]}, 
 				new InvocationHandler() {
-					
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 						Socket socket = null;
@@ -24,6 +24,7 @@ public class RpcImporter<S> {
 							socket.connect(addr);
 							output = new ObjectOutputStream(socket.getOutputStream());
 							output.writeUTF(serviceClass.getName());
+							System.out.println(serviceClass.getName());
 							output.writeUTF(method.getName());
 							output.writeObject(method.getParameterTypes());
 							output.writeObject(args);
